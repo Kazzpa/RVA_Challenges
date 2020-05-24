@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+	<node name="control" pkg="robotics_challenge" type="controlGoalParameterServer.py"  output="screen">
+		<rosparam command="load" file="$(find robotics_challenge)/cfg/controlGoalParams.yaml"/>
+		<rosparam command="load" file="$(find robotics_challenge)/cfg/goalsplan.yaml"/>
+	</node>
+	<node name="orca" pkg="robotics_challenge" type="orcaGazebo.py"  output="screen">
+		<rosparam command="load" file="$(find robotics_challenge)/cfg/orcaParams.yaml"/>
+	</node>
+</launch>

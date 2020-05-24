@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="planner" pkg="robotics_challenge" type="planner_node.py" output="screen">
+    <rosparam command="load" file="$(find robotics_challenge)/cfg/problem.yaml" />
+    <param name="goal_path" value="$(find robotics_challenge)/cfg/goalsplan.yaml"/>
+  </node>
+
+</launch>
+

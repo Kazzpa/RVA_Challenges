@@ -1,0 +1,8 @@
+goal_path: goalsplanChallenge3.yaml
+init:
+    x: 0
+    y: 0.35
+goal:
+    x: 1.12
+    y: 1.92
+costmap_topic: costmap_2d/costmap/costmap

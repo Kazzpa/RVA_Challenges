@@ -1,0 +1,6 @@
+linear_max: 0.5
+linear_turning: 0.10
+angular_max: 0.3
+angle_tolerance: 0.5
+skip_goal_max_distance: 1.3
+goal_tolerance: 0.30
