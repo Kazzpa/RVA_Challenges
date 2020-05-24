@@ -5,11 +5,14 @@ The code for the three different scenarios are the same, but parameters are diff
 - **Challenge 2**: Room with at least an obstacle undefined in map that can't be considered in planning phase
 - **Challenge 3:** Robotics labs that could have obstacles.
 ## Credits.
-[Luis Merino](https://github.com/lmercab)
-[David Alejo Teissière](https://github.com/david-alejo)
-[PyOrca Algorithm To avoid obstacles](https://github.com/Muon/pyorca)
-[Python Robotics algorithms](https://github.com/AtsushiSakai/PythonRobotics)
+[Luis Merino](https://github.com/lmercab)  
+[David Alejo Teissière](https://github.com/david-alejo)  
+[PyOrca Algorithm To avoid obstacles](https://github.com/Muon/pyorca)  
+[Python Robotics algorithms](https://github.com/AtsushiSakai/PythonRobotics)  
 # Nodes
+- [Control Node](#control-node)
+- [Orca Node](#orca-node)
+- Planner Node
 ## Control Node:
 ##### Gestiona la ruta a seguir y la dirección a seguir
 #### Topics:
@@ -51,14 +54,13 @@ Returns the current or next index in path , and a boolean to determine if the cu
  - **Twist** , /cmd_vel/tracker 
  - **LaserScan** , /scan
 ##### Parameters:
- -  **Path**, path: undefined until callback from /path_plan
- -  **Bool**, path_set: False until path is defined.
- -  **Bool**, skipping_goal: False unless callback from /is_goal_within_obstacle is True
- -  **Float**, skip_goal_max_distance: max distance where a goal will be skipped if skipping_goal is True
- - **Float**, goal_tolerance: distance where a goal will be considered reached.
- - **Float**, linear_max: max linear speed robot will be able to move.
- - **Float**, angular_max: max angular speed robot will be rotating.
- - **Float**, angle_tolerance: degrees where the robot will move slower and adjust the rotation.
- - **Float**, linear_turning: speed the robot will be moving when turning to achieve the degrees to goal defined in angle_tolerance.
+ -  **Float**, linear_threshold: Threshold where if isn't exceeded orca won't take action.
+ -  **Float**, linear_max: Max linear speed robot will be able to move.
+ -  **Float**, radius: Radius of the obstacle, which are named Agents in orca.
+ -  **Float**, delta_t: Time between every call to orca, which is defined as rate of sleep.
+ - **Float**, max_distance_obstacle: Max distance where a obstacle will be considered by orca to be avoided
+ - **Array**, v_orca: Speed considered for orca in vector 
+ - **Float**, linear: Linear speed to be published after being calculated
+ - **Float**, angular: Angular speed to be published after being calculated
 ##### Functions:
   - **__main__**: It initializes the node and sets it to sleep while not shutdown has been invoked.
