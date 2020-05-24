@@ -4,7 +4,7 @@ The code for the three different scenarios are the same, but parameters are diff
 -  **Challenge 1:** Room with all obstacles defined in map which are considered in planning phase
 - **Challenge 2**: Room with at least an obstacle undefined in map that can't be considered in planning phase
 - **Challenge 3:** Robotics labs that could have obstacles.
-## Credits.
+## Credits
 [Luis Merino](https://github.com/lmercab)  
 [David Alejo Teissière](https://github.com/david-alejo)  
 [PyOrca Algorithm To avoid obstacles](https://github.com/Muon/pyorca)  
@@ -15,7 +15,7 @@ The code for the three different scenarios are the same, but parameters are diff
 - Planner Node
 ## Control Node:
 ##### Gestiona la ruta a seguir y la dirección a seguir
-#### Topics:
+### Topics:
 ##### Publisher:
  - **Twist** , /cmd_vel/tracker
  - **Twist** , /cmd_vel_mux/input/navi
@@ -23,7 +23,7 @@ The code for the three different scenarios are the same, but parameters are diff
 ##### Subscriber:
  -  **Bool**, /is_goal_within_obstacle
  -  **Path**, /path_plan
-##### Parameters:
+### Parameters:
  -  **Path**, path: List of points the robot must follow,undefined until callback from /path_plan.
  -  **Bool**, path_set: Variable to know if path has already been defined or not.
  -  **Bool**, skipping_goal: Defines if orca had a problem finding a new movement to avoid obstacles, set in callback from /is_goal_within_obstacle
@@ -33,7 +33,7 @@ The code for the three different scenarios are the same, but parameters are diff
  - **Float**, angular_max: Max angular speed robot will be rotating.
  - **Float**, angle_tolerance: Degrees where the robot will move slower and adjust the rotation.
  - **Float**, linear_turning: Speed the robot will be moving when turning to achieve the degrees to goal defined in angle_tolerance.
-##### Functions:
+### Functions:
   - **__main__**: It initializes the node and defines the time ratio to which the command function will be executed, by which iterates the points of the path.
  - **command ( Int i )**:  calculates the linear and angular speed to achieve the current goal without exceed the limits defined, also manages if a goal in path should be skipped when called from /is_goal_within_obstacle , if the goal should be skipped it will calculate a new linea and angular velocity . 
 Returns the current or next index in path , and a boolean to determine if the current goal was reached.
@@ -45,7 +45,7 @@ Returns the current or next index in path , and a boolean to determine if the cu
  - **marker_goal ( Float goalx,Float goaly )**: Publish to /visualization_marker the next goal so we can visualize it in rviz.
 ## Orca Node:
 ##### Encargado de evitar los obstaculos recibidos por el radar y por tanto transformar la velocidad que llega de  control node a una en la que evite estos obstaculos, si no es posible enviara una señal a control para resolver el problema.
-#### Topics:
+### Topics:
 ##### Publisher:
  - **Twist** , /cmd_vel_mux/input/navi 
  -  **Bool**, /is_goal_within_obstacle
@@ -53,7 +53,7 @@ Returns the current or next index in path , and a boolean to determine if the cu
 ##### Subscriber:
  - **Twist** , /cmd_vel/tracker 
  - **LaserScan** , /scan
-##### Parameters:
+### Parameters:
  -  **Float**, linear_threshold: Threshold where if isn't exceeded orca won't take action.
  -  **Float**, linear_max: Max linear speed robot will be able to move.
  -  **Float**, radius: Radius of the obstacle, which are named Agents in orca.
@@ -62,5 +62,5 @@ Returns the current or next index in path , and a boolean to determine if the cu
  - **Array**, v_orca: Speed considered for orca in vector 
  - **Float**, linear: Linear speed to be published after being calculated
  - **Float**, angular: Angular speed to be published after being calculated
-##### Functions:
+### Functions:
   - **__main__**: It initializes the node and sets it to sleep while not shutdown has been invoked.
