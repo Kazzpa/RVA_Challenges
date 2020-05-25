@@ -52,7 +52,13 @@ class Turtlebot():
         #Parametro angle_tolerance en grados
         self.angle_tolerance = rospy.get_param('~angle_tolerance', default=5.0)
  
-    
+    #calculates the linear and angular speed to achieve the current goal without exceed 
+    # the limits defined, also manages if a goal in path should be skipped when called
+    #from /is_goal_within_obstacle , if the goal should be skipped it will calculate
+    #a new linea and angular velocity based in a bug algorithm to avoid the obstacle, 
+    # this will be called if an exception has been raised in orca node . 
+    # Returns the current or next index in path , and a boolean to determine if the 
+    # current goal was reached.
     def command(self, i):
         #rospy.loginfo("Command")
 
@@ -148,14 +154,16 @@ class Turtlebot():
                     angular = -self.angular_max
             self.publish(linear, angular)
             return False,i
-
+    #callback from planner node setting the path to follow
     def path_recieved(self,path):
         self.path = path
         self.path_set = True
-        
+    
+    #callback from orca if a exception has been caught, and next goal should be skipped
     def skip_Goal(self,received):
         self.skipping_Goal = received.data
 
+    #Calculates if there is a goal which is closer to the actual one and skip it
     def robot_closer_next_goal(self,i):
         success = False
         first_goal_ind = i
@@ -200,6 +208,7 @@ class Turtlebot():
             rospy.logwarn("Saltados %.0f pasos del path",(i - first_goal_ind)/2)
         return best_i
 
+    #publish desirable speed to orca node
     def publish(self, lin_vel, ang_vel):
         # Twist is a datatype for velocity
         move_cmd = Twist()
@@ -209,6 +218,7 @@ class Turtlebot():
         move_cmd.angular.z = ang_vel
         self.cmd_vel.publish(move_cmd)
 
+    #publish to /cmd_vel/input/navi topic which will be used if skipping_goal is true
     def publish_navi(self, lin_vel, ang_vel):
         # Twist is a datatype for velocity
         move_cmd = Twist()
@@ -218,6 +228,7 @@ class Turtlebot():
         move_cmd.angular.z = ang_vel
         self.cmd_vel_navi.publish(move_cmd)
 
+    #Publishes to /visualization_marker the next goal to reach.
     def marker_goal(self,goalx,goaly):
         obstacle = Point(goalx, goaly, 0)
         marker = Marker(

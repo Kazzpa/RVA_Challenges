@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import math
 from nav_msgs.msg import OccupancyGrid
 
-show_animation = False # Put to false to omit the animation
+show_animation = False  # Put to false to omit the animation
 
 
 class Dijkstra:
@@ -19,7 +19,7 @@ class Dijkstra:
     def __init__(self, costmap):
         """ 
         Initialize a map from a ROS costmap
-        
+
         costmap: ROS costmap
         """
         # Copy the map metadata
@@ -28,41 +28,40 @@ class Dijkstra:
         self.min_y = costmap.info.origin.position.y
         self.y_width = costmap.info.height
         self.x_width = costmap.info.width
-        self.max_x = self.min_x + self.x_width *self.resolution
-        self.max_y = self.min_y + self.y_width *self.resolution
+        self.max_x = self.min_x + self.x_width * self.resolution
+        self.max_y = self.min_y + self.y_width * self.resolution
         print self.min_x, self.min_y
         print self.max_x, self.max_y
         print "Resolution: ", self.resolution
         print self.x_width, self.y_width
-        
 
         self.motion = self.get_motion_model()
-        
+
         # Copy the actual map data from the map
         x = 0
         y = 0
         ox = list()
         oy = list()
-         # obstacle map generation
+        # obstacle map generation
         self.obstacle_map = [[False for _ in range(self.y_width)]
                              for _ in range(self.x_width)]
         obstacles = 0
         for value in costmap.data:
-            if value >95:
+            if value > 95:
                 obstacles += 1
                 self.obstacle_map[x][y] = True
-                ox.append(float(x)*self.resolution +self.min_x)
-                oy.append(float(y)*self.resolution +self.min_y)
+                ox.append(float(x)*self.resolution + self.min_x)
+                oy.append(float(y)*self.resolution + self.min_y)
             # Update the iterators
             x += 1
             if x == self.x_width:
                 x = 0
                 y += 1
-        print "Loaded %d obstacles"%(obstacles)
+        print "Loaded %d obstacles" % (obstacles)
         if show_animation:  # pragma: no cover
             plt.plot(ox, oy, ".k")
             plt.grid(True)
-            
+
             # plt.axis("equal")
         print("Dijkstra init: OK")
 
@@ -102,25 +101,24 @@ class Dijkstra:
         goal_node = self.Node(self.calc_xy_index(gx, self.min_x),
                               self.calc_xy_index(gy, self.min_y), 0.0, -1)
 
-        
         if (not self.verify_node(start_node)):
-            print self.obstacle_map[int(start_node.x)][int(start_node.y)] , 95
+            print self.obstacle_map[int(start_node.x)][int(start_node.y)], 95
             print "Error: init not valid"
-            return (0,0)
-        
+            return (0, 0)
+
         if (not self.verify_node(goal_node)):
             print "Error: goal not valid"
-            return (0,0)
-        
-        
+            return (0, 0)
+
         print start_node, goal_node
 
         open_set, closed_set = dict(), dict()
         open_set[self.calc_index(start_node)] = start_node
 
         while 1:
-            #+self.calc_distance(goal_node,open_set[o])
-            c_id = min(open_set, key=lambda o: open_set[o].cost)
+            #+self.calc_distance(goal_node, open_set[o])
+            c_id = min(
+                open_set, key=lambda o: open_set[o].cost)
             current = open_set[c_id]
 
             # show graph
@@ -150,7 +148,7 @@ class Dijkstra:
             for move_x, move_y, move_cost in self.motion:
                 node = self.Node(current.x + move_x,
                                  current.y + move_y,
-                                 current.cost + move_cost , c_id)
+                                 current.cost + move_cost, c_id)
                 n_id = self.calc_index(node)
 
                 if n_id in closed_set:
@@ -169,10 +167,12 @@ class Dijkstra:
         rx, ry = self.calc_final_path(goal_node, closed_set)
 
         return rx, ry
-    def calc_distance(self,n1,n2):
-        w = 0.5
-        d = w * math.hypot(n1.x-n2.x,n1.y-n2.y)
+
+    def calc_distance(self, n1, n2):
+        w = 1
+        d = w * math.hypot(n1.x-n2.x, n1.y-n2.y)
         return d
+
     def calc_final_path(self, goal_node, closed_set):
         # generate final course
         rx, ry = [self.calc_position(goal_node.x, self.min_x)], [
@@ -229,5 +229,4 @@ class Dijkstra:
                   [1, 1, math.sqrt(2)]]
 
         return motion
-
 

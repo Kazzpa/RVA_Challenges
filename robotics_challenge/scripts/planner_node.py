@@ -20,6 +20,19 @@ class Planner:
         # As a first possibility, we will search for the init and the goal
         # at the parameter server
 
+
+        #topics
+
+        #Publishers
+
+        self.marker_pub = rospy.Publisher('path', Marker, queue_size=10)
+        self.path_pub = rospy.Publisher('path_plan', Path, queue_size=10)
+        #Subscribers
+        self.costmap_topic = rospy.get_param(
+            '~costmap_topic', default="costmap_2d/costmap/costmap")
+        rospy.Subscriber(self.costmap_topic, OccupancyGrid, self.map_callback)
+        #rospy.Subscriber('goal_pose', OccupancyGrid, self.map_callback)
+
         rospy.loginfo("In the planner constructor")
 
         if rospy.has_param('~goal_path'):
@@ -32,36 +45,32 @@ class Planner:
         if rospy.has_param('~goal'):
             self.goalx = rospy.get_param('~goal/x')
             self.goaly = rospy.get_param('~goal/y')
-        rospy.loginfo("Here")
         print('Init (%f, %f). Goal (%f,%f): ' %
               (self.initx, self.inity, self.goalx, self.goaly))
-        self.costmap_topic = rospy.get_param(
-            '~costmap_topic', default="costmap_2d/costmap/costmap")
-        self.marker_pub = rospy.Publisher('path', Marker, queue_size=10)
-        self.path_pub = rospy.Publisher('path_plan', Path, queue_size=10)
-        rospy.Subscriber(self.costmap_topic, OccupancyGrid, self.map_callback)
-        rospy.Subscriber('goal_pose', OccupancyGrid, self.map_callback)
         self.listener = tf.TransformListener()
         self.init = False  # This flag would be raised in the map callback
 
+    #Retrieves the information from /costmap_2d/costmap/costmap and 
     def map_callback(self, map):
         self.map = map
         if self.init == False:
             self.init = True
             self.path = self.calculate_path(
                 self.initx, self.inity, self.goalx, self.goaly)
-            print "llamada a enviar topic path_plan"
-            self.publish_path_marker(self.path)
             self.publish_path_msg(self.path)
-            self.saveAsYaml(self.path)
+            self.publish_path_marker(self.path)
+            self.save_as_yaml(self.path)
             # TODO: 2 add the YAML exporting utility. Hint: use the pyyaml module
             # More information: https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-python/
             # Beware of the header (timestamp and frame_id)
 
+    #Calls dijkstra algorithm  that is modified to work as an astar
+    #algorithm to calculate the path from the init to the goal 
     def calculate_path(self, ix, iy, gx, gy):
         self.dijkstra = Dijkstra(self.map)
         return self.dijkstra.planning(ix, iy, gx, gy)
 
+    #Publish the Path plan to control node in /path_plan topic
     def publish_path_msg(self, path):
         print("Planner:Publicando path")
         x, y = path
@@ -83,6 +92,8 @@ class Planner:
         my_path.poses = poses
         self.path_pub.publish(my_path)
 
+    #Publish the path in a line_strip marker to be visualized in rviz
+    #using the /path topic
     def publish_path_marker(self, path):
         # TODO: 1 complete the publish marker method by publishing a LINE_STRIP marker
         # Beware of the header (timestamp and frame_id)
@@ -106,7 +117,8 @@ class Planner:
         self.marker_pub.publish(marker)
         rospy.loginfo("Publicado marcador")
 
-    def saveAsYaml(self, path):
+    #Saves the path plan as a yaml that can be read as a rosparam
+    def save_as_yaml(self, path):
         goalsList = {}
         x, y = path
         x = x[::-1]

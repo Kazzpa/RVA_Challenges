@@ -67,6 +67,8 @@ class ros_orca():
 
         self.listener = tf.TransformListener()
 
+    # Invoked by /cmd_vel/tracker, transform the speed into a vector
+    #  as v_orca whic is used by orca algorithm
     def callback_cmd_vel(self, data):
         #rospy.loginfo("Orca:Recibido datos de controlGoal")
         self.linear = data.linear.x
@@ -77,7 +79,7 @@ class ros_orca():
         self.v_orca = (self.linear * cos(self.angular), self.linear * sin(self.angular))
 
 
-    # Conversion a Twist para enviar a turtlebot
+    # Publish the calculated veocity to turtlebot
     def publish(self,lin_vel,ang_vel):
         # Twist is a datatype for velocity
         move_cmd = Twist()
@@ -88,6 +90,11 @@ class ros_orca():
         #rospy.loginfo("Orca:Movimiento enviado")
         self.cmd_vel.publish(move_cmd)
 
+    #Analyzes the obstacles retrieved from LaserScan, filters the ones 
+    #who are farther than max_distance_obstacle, and transform v_orca 
+    #in a new vector to avoid the obstacles. If orca can't transform 
+    #the direction a new one, it will raise an exception and True 
+    #will be send in /is_goal_within_obstacle topic
     def callback_scan(self, data):
         if self.v_orca != None:
             # if linear speed is greater than the threshold then it
@@ -135,6 +142,8 @@ class ros_orca():
                 #rospy.logwarn("Orca: Desplazado sin evitar obstaculos")
                 self.publish(self.linear,self.angular)
 
+    #Calls orca algorithm to resolve the direction which the robot
+    # must move to avoid obstacle.
     def orca_apply(self, agents):
         #Todo: catch InfeasibleError
         dt = self.delta_t
