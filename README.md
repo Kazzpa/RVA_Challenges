@@ -89,22 +89,22 @@ Returns the current or next index in path , and a boolean to determine if the cu
   - **publish_path_msg(Path path)**: Once calculated by calculate_path this will reverse the list of points as they come from the goal to init, and it will publish in /path_plan topic so the robot can star following it.
   - **publish_path_marker(path path)**: This will publish the path as Markers so rviz can visualize it.
   - **save_as_yaml(Path path)**: Saves the path as a yaml so a node can read it as ros params, this was used before the topic path_plan was created.
- ### Comparision between astar and dijkstra planning
- Points explored with Dijksta algorithm
- ![Points explored by dijkstra](img/dijkstra_plan.png)
-  Points explored with AStar algorithm
- ![Points explored by astar](img/astar_plan.png)
+ ### Comparision between astar and dijkstra planning  
+ Points explored with Dijksta algorithm  
+ ![Points explored by dijkstra](img/dijkstra_plan.png)  
+  Points explored with AStar algorithm  
+ ![Points explored by astar](img/astar_plan.png)   
  
  ### Images
  #### Challenge 1,2:
- Challenge 1 being completed, image from rviz
- ![challenge 1 in rviz](img/challenge1_rviz.png)
- Challenge 2 being completed, image from gazebo
- ![challenge 2 in gazebo](img/challenge2_gazebo.png)
- Challenge 2 being completed, image from rviz
- ![challenge 2 in rviz](img/challenge2_rviz.png)
- #### Challenge 3:
- Challenge 3 being completed, image from gazebo
- ![challenge 3 in gazebo](img/challenge3_gazebo.png)
- Challenge 3 being completed, image from rviz
- ![challenge 3 in rviz](img/challenge3_rviz.png)
+ Challenge 1 being completed, image from rviz  
+ ![challenge 1 in rviz](img/challenge1_rviz.png)  
+ Challenge 2 being completed, image from gazebo    
+ ![challenge 2 in gazebo](img/challenge2_gazebo.png)  
+ Challenge 2 being completed, image from rviz  
+ ![challenge 2 in rviz](img/challenge2_rviz.png)  
+ #### Challenge 3:  
+ Challenge 3 being completed, image from gazebo  
+ ![challenge 3 in gazebo](img/challenge3_gazebo.png)  
+ Challenge 3 being completed, image from rviz  
+ ![challenge 3 in rviz](img/challenge3_rviz.png)  
