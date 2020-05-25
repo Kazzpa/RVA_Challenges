@@ -37,6 +37,7 @@ If you need further help with ros commands check my [Ros Kinetic commands gist](
 - [Orca Node](#orca-node)
 - [Planner Node](#planner-node)
 ## Control Node:
+[code](robotics_challenge/scripts/controlGoalParameterServer.py)
 ##### It manages the route to follow and calculates the direction in which to move, taking into account the distance to the next point of the route and the direction in which it is located. It will control the exception that can give orca, solving it with a bug algorithm, in which it will always move towards a direction, to avoid possible collisions that the orca algorithm cannot solve. On the other hand, it will publish a marker that will refer to the point to which it has to move at the moment, represented as a small blue sphere.
 
 ### Topics:
@@ -68,6 +69,7 @@ Returns the current or next index in path , and a boolean to determine if the cu
  - **publish_navi ( Float lin_vel,Float ang_vel )**: publish to the `/cmd_vel_mux/input/navi` topic the speed to move, this function will only be called if skipping_goal is set to true, as a way to resolve a local minimun in with orca algorithm.
  - **marker_goal ( Float goalx,Float goaly )**: Publish to `/visualization_marker` the next goal so we can visualize it in rviz.
 ## Orca Node:
+[Code](robotics_challenge/scripts/orcaGazebo.py)
 ##### In charge of avoiding the obstacles received by the radar and therefore transform the speed coming from control node to one that avoids these obstacles, if not possible send a signal to control to solve the problem.
 ### Topics:
 ##### Publisher:
@@ -94,6 +96,7 @@ Returns the current or next index in path , and a boolean to determine if the cu
   - **orca_apply ( Agent [] agents)**: calls orca algorithm to resolve which direction must the robot move to avoid obstacles. More info in their own repo linked in credits.
  
 ## Planner Node:
+[code](robotics_challenge/scripts/planner_node.py)
 ##### Will calculate a path to the goal avoiding obstacles defined in the costmap, this will be calculated once. We will be using an a -star algorithm considering both the travelled distance and the distance to goal.
 ### Topics:
 ##### Publisher:
