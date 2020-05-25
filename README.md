@@ -1,8 +1,3 @@
-
-# Robotic Challenge
-Robotic challenge in three different scenarios where turtlebot must reach a goal passed as a parameter, planning a path and avoiding obstacles while trying to perform in the shortest time possible.
-The code for the three different scenarios are the same, but parameters are different.
-
 # Robotic Challenge
 Robotic challenge in three different scenarios where turtlebot must reach a goal passed as a parameter, planning a path and avoiding obstacles while trying to perform in the shortest time possible. There are three different scenarios which are described here and there are some screenshots in the bottom of the readme.
 -  **Scenario 1:** Room with all obstacles defined in map which are considered in planning phase
