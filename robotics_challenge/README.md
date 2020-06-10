@@ -1,4 +1,3 @@
-Proyecto subido en github, donde se ve mejor el readme https://github.com/Kazzpa/RVA_Challenges
 # Robotic Challenge
 Robotic challenge in three different scenarios where turtlebot must reach a goal passed as a parameter, planning a path and avoiding obstacles while trying to perform in the shortest time possible. There are three different scenarios which are described here and there are some screenshots in the bottom of the readme.
 -  **Scenario 1:** Room with all obstacles defined in map which are considered in planning phase
