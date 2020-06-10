@@ -36,7 +36,7 @@ If you need further help with ros commands check my [Ros Kinetic commands gist](
 For now there is only this module in the project
 - [Vision Challenge](#Vision Challenge)
 ## Vision Challenge:
-[code](vision_challenge/scripts/vision_challenge.py) *CHECK*
+[code](/vision_challenge/scripts/vision_challenge.py)
 ##### From the first image it will create a template that will check in each frame the correlation that each image fragment has with this template and for each frame it will give an estimation of where this object can be.
 
 ### Parameters:
