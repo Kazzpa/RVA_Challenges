@@ -57,18 +57,18 @@ For now there is only this module in the project
  - **resize_img (Image, factor)**:  resizes the image to the factor parameter if its to enlarge it will use the CUBIC interpolation and if its to reduce the size it will use the AREA interpolation, this function will also mask the created image based on the multiply_factor  
 
 ## Images TODO: EDIT
- #### Challenge 1,2:
- Challenge 1 being completed, image from rviz  
- ![challenge 1 in rviz](img/challenge1_rviz.png)  
- Challenge 2 being completed, image from gazebo    
- ![challenge 2 in gazebo](img/challenge2_gazebo.png)  
- Challenge 2 being completed, image from rviz  
- ![challenge 2 in rviz](img/challenge2_rviz.png)  
- #### Challenge 3:  
- Challenge 3 being completed, image from gazebo  
- ![challenge 3 in gazebo](img/challenge3_gazebo.png)  
- Challenge 3 being completed, image from rviz  
- ![challenge 3 in rviz](img/challenge3_rviz.png)  
+ #### Car scenario
+ Car template   
+ ![car template](img/car_template.png)  
+ Car template match guess  
+ ![Car template match guess](img/car_match.png)   
+ #### Ball scenario  
+ Ball template   
+ ![Ball template](img/ball_template.png)  
+ Ball mask created   
+ ![Ball mask created](img/ball_mask.png)  
+ Ball match guess   
+ ![Ball match guess  ](img/ball_match.png)   
 ## TODO: 
 These are things that were supossed to be working in the program but couldn't be done to the date.  
 - Fix looking for object in different scales
